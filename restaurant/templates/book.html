@@ -5,22 +5,18 @@
 <section>
   <article>
     <h1>Make a reservation</h1>
-    <!--Begin row-->
+
     <div class="row">
-      <!--Begin col-->
       <div class="column">
-        {% csrf_token %}
         <form method="POST" id="form">
-          <!-- {% csrf_token %} -->
           {% csrf_token %}
           <p>
             <label for="first_name">Name:</label>
-            <input type="text" placeholder="Your Name" maxlength="200" required="" id="first_name">
+            <input type="text" placeholder="Your Name" maxlength="200" id="first_name" required>
           </p>
           <p>
-            <!-- Step 9: Part one -->
             <label for="reservation_date">Date:</label>
-            <input id="reservation_date" type="date" placeholder="Your Name" maxlength="200" required="">
+            <input id="reservation_date" type="date" placeholder="Your Name" maxlength="200" required>
           </p>
 
           <p>
@@ -32,20 +28,13 @@
           <button type="button" id="button">Reserve</button>
         </form>
       </div>
-      <!--End col-->
 
-      <!--Begin col-->
       <div class="column">
         <h2>Bookings For <span id="today"></span></h2>
         <div id="bookings">
         </div>
       </div>
-      <!--End col-->
     </div>
-    <!--End row-->
-
-
-
 
   </article>
 </section>
@@ -55,9 +44,7 @@
   document.getElementById('reservation_date').value = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`
   getBookings()
 
-  /*  Step 10: Part two */
   document.getElementById('reservation_date').addEventListener('change', getBookings)
-
 
   function getBookings() {
     let reserved_slots = []
@@ -67,18 +54,16 @@
     fetch("{% url 'bookings' %}" + '?date=' + date)
       .then(r => r.json())
       .then(data => {
-        // console.log(data)
         reserved_slots = []
         bookings = ''
 
-        /* Step 11: Part three */
-        data.forEach(element => {
-          const { fields } = element
-          reserved_slots.push(fields.reservation_slot)
-          bookings += `<p>${fields.first_name} - ${formatTime(fields.reservation_slot)}</p>`
+
+        data.forEach(el => {
+          const { first_name, reservation_slot } = el
+          reserved_slots.push(reservation_slot)
+          bookings += `<p>${first_name} - ${formatTime(reservation_slot)}</p>`
         });
 
-        /* Step 12: Part four  */
         let slot_options = '<option value="0" disabled>Select time</option>'
         for (let i = 10; i < 20; i++) {
           let label = formatTime(i)
