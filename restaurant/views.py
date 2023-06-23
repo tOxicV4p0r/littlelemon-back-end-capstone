@@ -4,7 +4,7 @@ from .forms import BookingForm
 from .models import Menu
 from django.core import serializers
 from .serializers import BookingSerializer, MenuSerializer
-from .models import Booking
+from .models import Booking, Menu
 from datetime import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -12,11 +12,18 @@ from django.http import HttpResponse
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.decorators import api_view
 from json import dumps
 
-# Create your views here.
+class MenusViewSet(viewsets.ModelViewSet):
+   queryset = Menu.objects.all()
+   serializer_class = MenuSerializer
+
+class BooksViewSet(viewsets.ModelViewSet):
+   queryset = Booking.objects.all()
+   serializer_class = BookingSerializer
+
 class BooksView(generics.ListCreateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
