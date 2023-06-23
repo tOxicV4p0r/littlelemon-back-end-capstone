@@ -2,7 +2,6 @@
 from django.shortcuts import render
 from .forms import BookingForm
 from .models import Menu
-from django.core import serializers
 from .serializers import BookingSerializer, MenuSerializer
 from .models import Booking, Menu
 from datetime import datetime
@@ -10,10 +9,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
 from rest_framework import generics, viewsets
-from rest_framework.decorators import api_view
 from json import dumps
 
 class MenusViewSet(viewsets.ModelViewSet):
@@ -50,7 +46,7 @@ def book(request):
     context = {'form':form}
     return render(request, 'book.html', context)
 
-# Add your code here to create new views
+
 def menu(request):
     menu_data = Menu.objects.all()
     main_data = {"menu": menu_data}
